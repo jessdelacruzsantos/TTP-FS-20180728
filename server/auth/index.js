@@ -14,7 +14,7 @@ router.post('/login', async (req,res,next) => {
         if(user && user.correctPassword(req.body.password) ) {
             res.send(user)
         } else {
-            res.status(404).send('Wrong email or password!')
+            res.status(401).send('Wrong User Name or PassWord!')
         }
 
     } catch(error) {
