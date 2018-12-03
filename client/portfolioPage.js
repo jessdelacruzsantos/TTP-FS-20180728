@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import BuyForm from './buyForm'
 
-class Portfolio extends Component {
+class PortfolioPage extends Component {
     constructor(props) {
         super(props) 
     }
@@ -25,4 +25,4 @@ class Portfolio extends Component {
     }
 }
 
-export default Portfolio
+export default PortfolioPage

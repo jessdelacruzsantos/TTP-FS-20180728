@@ -97,18 +97,6 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./client/buyForm.js":
-/*!***************************!*\
-  !*** ./client/buyForm.js ***!
-  \***************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n\nconst styles = {\n  div: {\n    display: 'flex',\n    flexDirection: 'column'\n  },\n  form: {\n    display: 'flex',\n    flexDirection: 'column',\n    width: '80%',\n    margin: 'auto'\n  }\n};\n\nclass BuyForm extends react__WEBPACK_IMPORTED_MODULE_0__[\"Component\"] {\n  constructor(props) {\n    super(props);\n    this.state = {\n      ticker: '',\n      quantity: 0\n    };\n    this.handleBuy = this.handleBuy.bind(this);\n    this.handleChange = this.handleChange.bind(this);\n  }\n\n  handleChange(event) {\n    this.setState({\n      [event.target.name]: event.target.value\n    });\n  }\n\n  handleBuy(event) {\n    event.preventDefault();\n    console.log(this.state);\n  }\n\n  render() {\n    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n      style: styles.div\n    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"form\", {\n      style: styles.form,\n      onSubmit: this.handleBuy\n    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"input\", {\n      name: 'ticker',\n      placeholder: 'Ticker',\n      onChange: this.handleChange\n    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"input\", {\n      name: 'quantity',\n      placeholder: 'Quantity',\n      onChange: this.handleChange\n    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"button\", {\n      type: \"submit\",\n      name: \"buy\",\n      placeholder: \"buy\"\n    }, \"Buy\")));\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (BuyForm);\n\n//# sourceURL=webpack:///./client/buyForm.js?");
-
-/***/ }),
-
 /***/ "./client/main.js":
 /*!************************!*\
   !*** ./client/main.js ***!
@@ -126,10 +114,9 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var reac
   !*** ./client/portfolio.js ***!
   \*****************************/
 /*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _buyForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./buyForm */ \"./client/buyForm.js\");\n\n\n\nclass Portfolio extends react__WEBPACK_IMPORTED_MODULE_0__[\"Component\"] {\n  constructor(props) {\n    super(props);\n  }\n\n  render() {\n    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"h1\", {\n      style: {\n        height: '10vh',\n        width: '100vw'\n      }\n    }, \"Portfolio! (Value)\"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n      style: {\n        display: 'flex'\n      }\n    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n      style: {\n        overflow: 'hidden',\n        height: '90vh',\n        width: '100vw',\n        background: 'blue'\n      }\n    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n      style: {\n        overflow: 'hidden',\n        height: '90vh',\n        width: '100vw'\n      }\n    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"h1\", {\n      style: {\n        margin: 'auto'\n      }\n    }, \"Balance: $\", this.props.user.balance), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_buyForm__WEBPACK_IMPORTED_MODULE_1__[\"default\"], null))));\n  }\n\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Portfolio);\n\n//# sourceURL=webpack:///./client/portfolio.js?");
+eval("throw new Error(\"Module build failed (from ./node_modules/babel-loader/lib/index.js):\\nError: ENOENT: no such file or directory, open '/Users/jessiedelacruz/Projects/TTPWebApp/client/portfolio.js'\");\n\n//# sourceURL=webpack:///./client/portfolio.js?");
 
 /***/ }),
 

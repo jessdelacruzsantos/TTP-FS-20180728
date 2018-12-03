@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom'
 import axios from 'axios'
 import SignIn from './signIn'
-import Portfolio from './portfolio'
+import PortfolioPage from './portfolio'
 
 class App extends Component {
     constructor(props) {
@@ -42,7 +42,7 @@ class App extends Component {
         return (<Switch>
             {this.state.isLoggedIn && (
                 <Switch>
-                    <Route path={'/portfolio'} render={ (props) => (<Portfolio user={this.state.user} {...props}/>)}/>
+                    <Route path={'/portfolio'} render={ (props) => (<PortfolioPage user={this.state.user} {...props}/>)}/>
                     <Redirect to={'/portfolio'}/>
                 </Switch>
             )}
