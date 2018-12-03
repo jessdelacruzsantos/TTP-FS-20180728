@@ -4,7 +4,7 @@ const Sequelize = require('sequelize')
 const PurchasedStock = db.define('purchasedstock', {
     quantity:{
         type: Sequelize.INTEGER,
-        allowNull: false
+        defaultValue:0,
     }
 })
 

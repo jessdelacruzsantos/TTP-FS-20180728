@@ -30,5 +30,14 @@ User.prototype.correctPassword = function (userSubmission) {
 User.prototype.getBalance = function () {
     return this.balance / 100
 }
+User.prototype.updateBalance = async function(cost){
+    let remaining = this.balance - cost
+
+    if(remaining >= 0) {
+        return await this.update({balance: remaining})
+    } else {
+        throw new Error()
+    }
+}
 
 module.exports = User

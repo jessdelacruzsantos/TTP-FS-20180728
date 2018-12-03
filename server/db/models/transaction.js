@@ -9,6 +9,14 @@ const Transaction = db.define('transaction', {
     quantity:{
         type: Sequelize.INTEGER,
         allowNull: false,
+    },
+    ticker: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    stockPrice:{
+        type:Sequelize.INTEGER,
+        allowNull:false
     }
 })
 
