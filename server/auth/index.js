@@ -2,9 +2,7 @@ const router = require('express').Router();
 const {User}= require('../db')
 
 module.exports = router;
-router.get('/', () => {
-    console.log('Get works@@@@@@')
-})
+
 router.post('/login', async (req,res,next) => {
     try {
         let user = await User.findOne({
@@ -13,10 +11,10 @@ router.post('/login', async (req,res,next) => {
             }
         })
 
-        if(!user) {
-            res.status(404).send('Wrong email or password!')
-        } else {
+        if(user && user.correctPassword(req.body.password) ) {
             res.send(user)
+        } else {
+            res.status(404).send('Wrong email or password!')
         }
 
     } catch(error) {

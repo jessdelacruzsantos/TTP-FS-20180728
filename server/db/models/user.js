@@ -16,4 +16,8 @@ const User = db.define('user', {
     }
 })
 
+User.prototype.correctPassword = function (userSubmission) {
+    return userSubmission === this.password()
+}
+
 module.exports = User
