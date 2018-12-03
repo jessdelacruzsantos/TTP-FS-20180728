@@ -3,18 +3,31 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom'
 import axios from 'axios'
 import SignIn from './signIn'
-import PortfolioPage from './portfolio'
+import PortfolioPage from './portfolioPage'
 
 class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
             isLoggedIn: false,
-            user : {},
+            user : {
+                balance:0,
+                id:0,
+            },
         }
 
         this.logIn = this.logIn.bind(this)
         this.signUp = this.signUp.bind(this)
+        this.updateBalance = this.updateBalance.bind(this)
+    }
+
+    updateBalance(transaction){
+        let {type,quantity,stockPrice} = transaction
+
+        let cost = stockPrice * quantity * 100
+        let balance = this.state.user.balance - cost
+        console.log(balance, cost, stockPrice)
+        this.setState({user:{balance}})
     }
 
     async logIn(email, password) {
@@ -38,11 +51,11 @@ class App extends Component {
 
 
     render() {
-        console.log(this)
+        console.log(this.state)
         return (<Switch>
             {this.state.isLoggedIn && (
                 <Switch>
-                    <Route path={'/portfolio'} render={ (props) => (<PortfolioPage user={this.state.user} {...props}/>)}/>
+                    <Route path={'/portfolio'} render={ (props) => (<PortfolioPage user={this.state.user} updateBalance={this.updateBalance}{...props}/>)}/>
                     <Redirect to={'/portfolio'}/>
                 </Switch>
             )}

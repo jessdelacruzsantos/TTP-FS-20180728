@@ -27,11 +27,9 @@ const User = db.define('user', {
 User.prototype.correctPassword = function (userSubmission) {
     return userSubmission === this.password()
 }
-User.prototype.getBalance = function () {
-    return this.balance / 100
-}
 User.prototype.updateBalance = async function(cost){
-    let remaining = this.balance - cost
+    let remaining = this.balance - (cost * 100)
+    console.log('*****', remaining, this.balance, (cost*100), cost)
 
     if(remaining >= 0) {
         return await this.update({balance: remaining})

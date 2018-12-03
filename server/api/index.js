@@ -11,8 +11,8 @@ router.post('/user/:id/purchase', async (req,res,next) => {
             User.findById(Number(req.params.id)),
             Stock.findOrCreate({where: {ticker: ticker}})
         ])
-        
-        let cost = exchangeInfo.data.quote.latestPrice * quantity
+        console.log(exchangeInfo.data.quote.latestPrice)
+        let cost = exchangeInfo.data.quote.latestPrice * 100 * quantity 
         
 
         if(user.dataValues && user.balance >= cost) {
