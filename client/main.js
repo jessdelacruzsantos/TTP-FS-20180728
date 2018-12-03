@@ -38,6 +38,7 @@ class App extends Component {
 
 
     render() {
+        console.log(this)
         return (<Switch>
             {this.state.isLoggedIn && (
                 <Switch>
