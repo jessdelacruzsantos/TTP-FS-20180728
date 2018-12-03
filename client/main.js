@@ -13,6 +13,8 @@ class App extends Component {
             user : {
                 balance:0,
                 id:0,
+                stocks:[],
+                transactions:[],
             },
         }
 
@@ -27,7 +29,10 @@ class App extends Component {
         let cost = stockPrice * quantity * 100
         let balance = this.state.user.balance - cost
         console.log(balance, cost, stockPrice)
-        this.setState({user:{balance}})
+        this.setState({user:{
+            balance,
+            transactions:[...this.state.user.transactions, transaction]
+        }})
     }
 
     async logIn(email, password) {
