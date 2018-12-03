@@ -12,6 +12,7 @@ const User = db.define('user', {
     },
     password: {
         type: Sequelize.STRING,
+        allowNull: false,
         // Hides the password and makes .password act like function
         get() {
             return () => this.getDataValue('password')
