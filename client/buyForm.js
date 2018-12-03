@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import axios from 'axios'
 
 const styles = {
     div:{
@@ -21,25 +22,32 @@ class BuyForm extends Component{
             quantity:0,
 
         }
-        this.handleBuy = this.handleBuy.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.purchaseStock = this.purchaseStock.bind(this);
     }
+    async purchaseStock(event){
+        event.preventDefault()
 
+        try{
+            let {ticker,quantity} = this.state
+            let {data} = await axios.post(`/api/user/${this.props.userId}/purchase`, {ticker,quantity})
+            console.log(data)
+            this.props.updateBalance(data)
+        }catch(error){
+            console.log(error)
+        }
+        
+    }
     handleChange(event) {
         this.setState({
             [event.target.name]: event.target.value
         })
     }
 
-    handleBuy(event) {
-        event.preventDefault()
-        console.log(this.state)
-    }
-
     render() {
         return (
             <div style={styles.div}>
-                <form style={styles.form} onSubmit={this.handleBuy}>
+                <form style={styles.form} onSubmit={this.purchaseStock}>
                     <input name={'ticker'} placeholder={'Ticker'} onChange={this.handleChange}></input>
                     <input name={'quantity'} placeholder={'Quantity'} onChange={this.handleChange}></input>
                     <button type ='submit' name='buy' placeholder='buy'>Buy</button>

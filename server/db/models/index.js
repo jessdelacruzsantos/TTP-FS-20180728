@@ -13,4 +13,5 @@ module.exports ={
     User,
     Transaction,
     Stock,
+    PurchasedStock
 }

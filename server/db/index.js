@@ -1,4 +1,4 @@
 const db = require('./db');
-const {User} = require('./models')
+// const {User, Stock,PurchasedStock, Transaction} = require('./models')
 
-module.exports = { db, User };
+module.exports = { db, ...require('./models') };
