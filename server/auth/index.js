@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {User}= require('../db')
+const {User, Transaction, Stock}= require('../db')
 
 module.exports = router;
 
@@ -8,7 +8,8 @@ router.post('/login', async (req,res,next) => {
         let user = await User.findOne({
             where: {
                 email:req.body.email
-            }
+            },
+            include: [{model: Stock, through: 'purchasedstock'}, {model:Transaction}]
         })
 
         if(user && user.correctPassword(req.body.password) ) {

@@ -28,8 +28,7 @@ User.prototype.correctPassword = function (userSubmission) {
     return userSubmission === this.password()
 }
 User.prototype.updateBalance = async function(cost){
-    let remaining = this.balance - (cost * 100)
-    console.log('*****', remaining, this.balance, (cost*100), cost)
+    let remaining = this.balance - cost
 
     if(remaining >= 0) {
         return await this.update({balance: remaining})

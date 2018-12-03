@@ -15,9 +15,10 @@ app.use('/api', require('./api'));
 
 // static file serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')));
-console.log('*~~~~~~')
 
-
+app.use('*', (req,res) => {
+  res.sendFile(path.join(__dirname,'..','public','index.html'))
+})
 
 
 const start = async () => {
