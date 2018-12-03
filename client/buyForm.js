@@ -42,7 +42,7 @@ class BuyForm extends Component{
                 <form style={styles.form} onSubmit={this.handleBuy}>
                     <input name={'ticker'} placeholder={'Ticker'} onChange={this.handleChange}></input>
                     <input name={'quantity'} placeholder={'Quantity'} onChange={this.handleChange}></input>
-                    <button name='buy' placeholder='buy'>Buy</button>
+                    <button type ='submit' name='buy' placeholder='buy'>Buy</button>
                 </form>
             </div>
         )
