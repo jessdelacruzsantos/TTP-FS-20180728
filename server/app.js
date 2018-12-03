@@ -10,14 +10,19 @@ app.use(volleyball);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/auth', require('./auth'))
+app.use('/api', require('./api'));
+
 // static file serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')));
+console.log('*~~~~~~')
 
-app.use('/api', require('./api'));
+
+
 
 const start = async () => {
   const PORT = 8080;
-  await db.sync();
+  await db.sync({force:true});
   app.listen(PORT, err => {
     if (err) console.error(err);
     else console.log('server is listening on port', PORT);
