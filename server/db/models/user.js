@@ -16,12 +16,15 @@ const User = db.define('user', {
     },
     balance: {
         type: Sequelize.INTEGER,
-        defaultValue: 500000
+        defaultValue: 500000,
     },
 })
 
 User.prototype.correctPassword = function (userSubmission) {
     return userSubmission === this.password()
+}
+User.prototype.getBalance = function () {
+    return this.balance / 100
 }
 
 module.exports = User

@@ -42,7 +42,7 @@ class App extends Component {
         return (<Switch>
             {this.state.isLoggedIn && (
                 <Switch>
-                    <Route path={'/portfolio'} component={Portfolio}/>
+                    <Route path={'/portfolio'} render={ (props) => (<Portfolio user={this.state.user} {...props}/>)}/>
                     <Redirect to={'/portfolio'}/>
                 </Switch>
             )}
