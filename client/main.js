@@ -30,6 +30,7 @@ class App extends Component {
         let balance = this.state.user.balance - cost
         console.log(balance, cost, stockPrice)
         this.setState({user:{
+            ...this.state.user,
             balance,
             transactions:[...this.state.user.transactions, transaction]
         }})
