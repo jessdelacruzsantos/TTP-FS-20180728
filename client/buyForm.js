@@ -31,7 +31,6 @@ class BuyForm extends Component{
         try{
             let {ticker,quantity} = this.state
             let {data} = await axios.post(`/api/user/${this.props.userId}/purchase`, {ticker,quantity})
-            console.log(data)
             this.props.updateBalance(data)
         }catch(error){
             console.log(error)

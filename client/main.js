@@ -13,33 +13,83 @@ class App extends Component {
             user : {
                 balance:0,
                 id:0,
-                stocks:[],
                 transactions:[],
             },
+            stocks:{},
+            stockQuotes:{},
         }
 
         this.logIn = this.logIn.bind(this)
         this.signUp = this.signUp.bind(this)
         this.updateBalance = this.updateBalance.bind(this)
+        this.stocksObject = this.stocksObject.bind(this)
+        this.longPollingQuotes = this.longPollingQuotes.bind(this);
+    }
+    async longPollingQuotes() {
+        let symbols = Object.keys(this.state.stocks)
+
+
+        if(symbols.length) {
+            let {data} = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
+            this.setState({
+                stockQuotes: data 
+            }, () => {
+                setTimeout(()=> {
+                    this.longPollingQuotes()
+                })
+            }, 10000)
+        } else {
+            setTimeout(()=> {
+                this.longPollingQuotes()
+            }, 10000)
+        }
     }
 
-    updateBalance(transaction){
-        let {type,quantity,stockPrice} = transaction
+    stocksObject(transactions) {
+        let stocks = {}
+
+        transactions.forEach((tran) => {
+            if(!stocks[tran.ticker]) {
+                stocks[tran.ticker] = tran.quantity
+            } else {
+                stocks[tran.ticker] += tran.quantity
+            }
+        })
+
+        return stocks
+    }
+
+    async updateBalance(transaction){
+        let {ticker,quantity,stockPrice} = transaction
 
         let cost = stockPrice * quantity * 100
         let balance = this.state.user.balance - cost
-        console.log(balance, cost, stockPrice)
-        this.setState({user:{
-            ...this.state.user,
-            balance,
-            transactions:[...this.state.user.transactions, transaction]
-        }})
+        let newQuantity = this.state.stocks[transaction.ticker]? this.state.stocks[transaction.ticker]  + transaction.quantity : transaction.quantity
+
+        let {data} = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${ticker}&types=quote&filter=open,latestPrice`)
+        this.setState(
+            {
+                user:{
+                    ...this.state.user,
+                    balance,
+                    transactions:[...this.state.user.transactions, transaction],
+                },
+                stocks:{...this.state.stocks, [ticker]: newQuantity},
+                stockQuotes: {...this.state.stockQuotes, [ticker]: data[ticker]}
+            }
+        )
     }
 
     async logIn(email, password) {
         try {
             let {data} =  await axios.post('/auth/login', {email,password})
-            this.setState({isLoggedIn:true, user:data})
+            let stocks = this.stocksObject(data.transactions)
+            let symbols = Object.keys(stocks)
+            let quotes = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
+            this.setState({
+                isLoggedIn:true, 
+                user:data, stocks,
+                stockQuotes: quotes.data})
         } catch(error) {
             console.log(error)
         }
@@ -48,8 +98,11 @@ class App extends Component {
     async signUp(email, password) {
         try {
             let {data} =  await axios.post('/auth/signup', {email,password})
-            console.log(data)
-            this.setState({isLoggedIn:true, user:data})
+            
+            this.setState({
+                isLoggedIn:true, 
+                user: {...data, transactions: []},
+            })
         }catch(erro) {
             console.log(error)
         }
@@ -57,11 +110,10 @@ class App extends Component {
 
 
     render() {
-        console.log(this.state)
         return (<Switch>
             {this.state.isLoggedIn && (
                 <Switch>
-                    <Route path={'/portfolio'} render={ (props) => (<PortfolioPage user={this.state.user} updateBalance={this.updateBalance}{...props}/>)}/>
+                    <Route path={'/portfolio'} render={ (props) => (<PortfolioPage longPoll={this.longPollingQuotes} stocks={this.state.stocks}user={this.state.user} stockQuotes={this.state.stockQuotes}updateBalance={this.updateBalance}{...props}/>)}/>
                     <Redirect to={'/portfolio'}/>
                 </Switch>
             )}
