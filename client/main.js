@@ -2,8 +2,13 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom'
 import axios from 'axios'
-import SignIn from './signIn'
 import PortfolioPage from './portfolioPage'
+import AuthState from './authState';
+import AuthForm from './authForm'
+
+const SignUp = AuthState(AuthForm)
+const LogIn = AuthState(AuthForm)
+
 
 class App extends Component {
     constructor(props) {
@@ -117,7 +122,28 @@ class App extends Component {
                     <Redirect to={'/portfolio'}/>
                 </Switch>
             )}
-            <Route render={ (props) => (<SignIn logIn={this.logIn} signUp={this.signUp} {...props} />) }/>
+            <Route path={'/signup'} render={ (props) => (
+                <SignUp 
+                    instruct={'Create an Account With Us!'} 
+                    buttName={'Sign Up'}
+                    message={'Already have an account with us?'}
+                    link={'/login'}
+                    linkName={'Log In'}
+                    onSubmission={this.signUp}
+                    {...props}
+                 />
+            )} />
+            <Route render={ (props) => (
+                <LogIn 
+                    instruct={'Log In to your Account!'} 
+                    buttName={'Log In'}
+                    message={'Create an account with us?'}
+                    link={'/signup'}
+                    linkName={'Sign UP'}
+                    onSubmission={this.logIn} 
+                    {...props} 
+                />) 
+            }/>
         </Switch>)
     }
 }
