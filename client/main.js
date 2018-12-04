@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom'
 import axios from 'axios'
-import PortfolioPage from './portfolioPage'
+import Navbar from './navbar'
 import AuthState from './authState';
 import AuthForm from './authForm'
+import PortfolioPage from './portfolioPage'
 
 const SignUp = AuthState(AuthForm)
 const LogIn = AuthState(AuthForm)
@@ -117,10 +118,13 @@ class App extends Component {
     render() {
         return (<Switch>
             {this.state.isLoggedIn && (
-                <Switch>
-                    <Route path={'/portfolio'} render={ (props) => (<PortfolioPage longPoll={this.longPollingQuotes} stocks={this.state.stocks}user={this.state.user} stockQuotes={this.state.stockQuotes}updateBalance={this.updateBalance}{...props}/>)}/>
-                    <Redirect to={'/portfolio'}/>
-                </Switch>
+                <React.Fragment>
+                    <Navbar/>
+                    <Switch>
+                        <Route path={'/portfolio'} render={ (props) => (<PortfolioPage longPoll={this.longPollingQuotes} stocks={this.state.stocks}user={this.state.user} stockQuotes={this.state.stockQuotes}updateBalance={this.updateBalance}{...props}/>)}/>
+                        <Redirect to={'/portfolio'}/>
+                    </Switch>
+                </React.Fragment>
             )}
             <Route path={'/signup'} render={ (props) => (
                 <SignUp 
