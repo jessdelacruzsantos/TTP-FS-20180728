@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'
 import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom'
 import axios from 'axios'
 import Navbar from './navbar'
 import AuthState from './authState';
 import AuthForm from './authForm'
 import PortfolioPage from './portfolioPage'
+import Transactions from './transactions';
 
 const SignUp = AuthState(AuthForm)
 const LogIn = AuthState(AuthForm)
@@ -29,26 +30,17 @@ class App extends Component {
         this.signUp = this.signUp.bind(this)
         this.updateBalance = this.updateBalance.bind(this)
         this.stocksObject = this.stocksObject.bind(this)
-        this.longPollingQuotes = this.longPollingQuotes.bind(this);
+        this.updatePrices = this.updatePrices.bind(this);
     }
-    async longPollingQuotes() {
+    async updatePrices() {
         let symbols = Object.keys(this.state.stocks)
-
 
         if(symbols.length) {
             let {data} = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
             this.setState({
                 stockQuotes: data 
-            }, () => {
-                setTimeout(()=> {
-                    this.longPollingQuotes()
-                })
-            }, 10000)
-        } else {
-            setTimeout(()=> {
-                this.longPollingQuotes()
-            }, 10000)
-        }
+            })
+        } 
     }
 
     stocksObject(transactions) {
@@ -61,7 +53,6 @@ class App extends Component {
                 stocks[tran.ticker] += tran.quantity
             }
         })
-
         return stocks
     }
 
@@ -104,7 +95,6 @@ class App extends Component {
     async signUp(email, password) {
         try {
             let {data} =  await axios.post('/auth/signup', {email,password})
-            
             this.setState({
                 isLoggedIn:true, 
                 user: {...data, transactions: []},
@@ -114,14 +104,15 @@ class App extends Component {
         }
     }
 
-
     render() {
+        console.log(this.state.user.transactions)
         return (<Switch>
             {this.state.isLoggedIn && (
                 <React.Fragment>
                     <Navbar/>
                     <Switch>
-                        <Route path={'/portfolio'} render={ (props) => (<PortfolioPage longPoll={this.longPollingQuotes} stocks={this.state.stocks}user={this.state.user} stockQuotes={this.state.stockQuotes}updateBalance={this.updateBalance}{...props}/>)}/>
+                        <Route path={'/portfolio'} render={ (props) => (<PortfolioPage updatePrices={this.updatePrices} stocks={this.state.stocks}user={this.state.user} stockQuotes={this.state.stockQuotes}updateBalance={this.updateBalance}{...props}/>)}/>
+                        <Route path={'/transactions'} render={(props)=> <Transactions transactions={this.state.user.transactions} {...props}/>}/>
                         <Redirect to={'/portfolio'}/>
                     </Switch>
                 </React.Fragment>

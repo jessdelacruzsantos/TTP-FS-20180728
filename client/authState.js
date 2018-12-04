@@ -1,8 +1,7 @@
 import React, { Component} from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
-import {Link} from 'react-router-dom'
 
-export default (AuthForm) => (
+
+export default (Form) => (
 
   class FormControls extends Component {
       constructor(props) {
@@ -30,10 +29,9 @@ export default (AuthForm) => (
             alert('NotValid')
         }
       }
-  
       render() {
           return (
-            <AuthForm 
+            <Form 
               handleChange={this.handleChange} 
               handleSubmit={this.handleSubmit}
               {...this.props}
