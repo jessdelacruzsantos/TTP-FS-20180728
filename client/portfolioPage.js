@@ -1,37 +1,25 @@
 import React, {Component} from 'react'
 import BuyForm from './buyForm'
+import Portfolio from './portfolio'
 
 class PortfolioPage extends Component {
     constructor(props) {
         super(props) 
-        this.state={
-            stocks:{}
-        }
     }
-
     componentDidMount() {
-        let stocks = {}
-
-        this.props.user.transactions.forEach((tran) => {
-            console.log(tran)
-            if(!stocks[tran.ticker]) {
-                console.log(typeof tran.quantity,  tran.quantity)
-                stocks[tran.ticker] = tran.quantity
-            } else {
-                console.log(typeof stocks[tran.ticker],  stocks[tran.ticker])
-                stocks[tran.ticker] += tran.quantity
-            }
-        })
-
-        this.setState({stocks})
+        this.props.longPoll()
     }
 
     render() {
+        let totalValue = Object.keys(this.props.stocks).reduce((acc, stockSymbol) => {
+            return acc + (this.props.stocks[stockSymbol] * this.props.stockQuotes[stockSymbol].quote.latestPrice)
+        },0)
         return (
             <React.Fragment>
-            <h1 style={{height: '10vh', width:'100vw'}}>Portfolio! (Value)</h1>
+            <h1 style={{height: '10vh', width:'100vw'}}>Portfolio! {totalValue}</h1>
             <div style={{display:'flex'}}>
-                <div style={{overflow:'hidden',height: '90vh', width:'100vw', background:'blue'}}>
+                <div style={{overflow:'hidden',height: '90vh', width:'100vw'}}>
+                    <Portfolio stocks={this.props.stocks} stockQuotes={this.props.stockQuotes}/>
                 </div>
                 <div style={{overflow:'hidden',height: '90vh', width:'100vw'}}>
                     <h1 style={{margin: 'auto'}}>Balance: ${this.props.user.balance / 100.00}</h1>
