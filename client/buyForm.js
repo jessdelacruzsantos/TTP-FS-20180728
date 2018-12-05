@@ -11,15 +11,14 @@ class BuyForm extends Component{
 
         }
         this.handleChange = this.handleChange.bind(this)
-        this.purchaseStock = this.purchaseStock.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    async purchaseStock(event){
+    async handleSubmit(event){
         event.preventDefault()
         try{
             let {ticker,quantity} = this.state
-            let {data} = await axios.post(`/api/user/${this.props.userId}/purchase`, {ticker,quantity})
-            this.props.updateBalance(data)
+            this.props.makeTransaction(ticker,quantity)
             this.setState({
                 ticker:'',
                 quantity:''
@@ -42,7 +41,7 @@ class BuyForm extends Component{
                     <Statistic.Label>Account Balance:</Statistic.Label>
                     <Statistic.Value>{`$${this.props.balance}`} </Statistic.Value>
                  </Statistic>
-                <Form onSubmit={this.purchaseStock}>
+                <Form onSubmit={this.handleSubmit}>
                 <Form.Field>
                     <input placeholder='Ticker Symbol' name='ticker' value={this.state.ticker} onChange={this.handleChange}/>
                 </Form.Field>

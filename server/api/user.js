@@ -2,7 +2,7 @@ const router = require('express').Router();
 const {User, Transaction} = require('../db')
 const axios  = require('axios')
  
-router.post('/purchase', async (req,res,next) => {
+router.post('/transactions', async (req,res,next) => {
     let {quantity, ticker} = req.body
     try{
         let [exchangeInfo, user] = await Promise.all([
@@ -13,15 +13,15 @@ router.post('/purchase', async (req,res,next) => {
         let cost = Math.round(exchangeInfo.data.quote.latestPrice) * 100 * quantity 
         
         if(user.dataValues && user.balance >= cost) {
-            let updatedBalance = user.updateBalance(cost)
-            let transaction = Transaction.create({
+            let balance = (await user.updateBalance(cost)).balance
+            let transaction = await Transaction.create({
                 type:'Purchase', 
                 quantity, 
                 userId: req.user.id,
                 ticker,
                 stockPrice:exchangeInfo.data.quote.latestPrice})
 
-            res.json(await Promise.all[updatedBalance,transaction])
+            res.json({balance,transaction})
             
         } else {
             res.status(500).send('Unable to find user')

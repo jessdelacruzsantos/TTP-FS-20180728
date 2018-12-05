@@ -1,9 +1,12 @@
 import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
 import {BrowserRouter, withRouter} from 'react-router-dom'
 import {Routes} from './index'
+import axios from 'axios'
+
 
 class App extends Component{
-    component(props) {
+    constructor(props) {
         super(props) 
         this.state ={
             isLoading: true,
@@ -18,6 +21,7 @@ class App extends Component{
     async componentDidMount() {
         try{   
             let {data} = await axios.get('auth/me')
+            console.log(data)
             this.setState({
                 isLoading: false,
                 isLoggedIn: !!data.id, 
