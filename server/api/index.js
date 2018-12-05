@@ -11,7 +11,6 @@ router.post('/user/:id/purchase', async (req,res,next) => {
             User.findById(Number(req.params.id)),
             // Stock.findOrCreate({where: {ticker: ticker}})
         ])
-        console.log(exchangeInfo.data.quote.latestPrice)
         let cost = exchangeInfo.data.quote.latestPrice * 100 * quantity 
         
 
