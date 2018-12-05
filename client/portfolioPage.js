@@ -13,6 +13,7 @@ class PortfolioPage extends Component {
     }
     
     componentDidMount() {
+        // Navigating back to the page
         if(this.props.hasLoaded) {
             this.updatePrices()
             this.getPrices = setInterval(()=> {
@@ -22,12 +23,18 @@ class PortfolioPage extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if( prevProps.hasLoaded !== this.props.hasLoaded ) {
+        // Initial load of Portfolio
+        if( (prevProps.hasLoaded !== this.props.hasLoaded) ) {
             this.updatePrices()
+
+            this.getPrices = setInterval(()=> {
+                this.updatePrices()
+            }, 1000)
         }
     }
 
     componentWillUnmount(){
+        // Clears the setInterval once the component unmounts
         clearInterval(this.getPrices)
     }
 

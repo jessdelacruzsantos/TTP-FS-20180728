@@ -10,7 +10,7 @@ router.post('/transactions', async (req,res,next) => {
             User.findById(Number(req.user.id)),
         ])
 
-        let cost = Math.round(exchangeInfo.data.quote.latestPrice) * 100 * quantity 
+        let cost = Math.round(exchangeInfo.data.quote.latestPrice * 100 * quantity) 
         
         if(user.dataValues && user.balance >= cost) {
             let balance = (await user.updateBalance(cost)).balance

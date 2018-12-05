@@ -57,8 +57,6 @@ class Routes extends Component {
         let {data} = await axios.post(`/api/user/transactions`, {ticker,quantity})
         let {balance, transaction} = data
         let newQuantity = (prevStocks[transaction.ticker] || 0) + transaction.quantity
-        console.log(balance)
-        
 
         this.setState({
             balance,
