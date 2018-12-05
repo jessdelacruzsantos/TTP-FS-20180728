@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom'
-import {BrowserRouter,Switch, Route, Redirect, withRouter} from 'react-router-dom'
+import {Switch, Route, Redirect, withRouter} from 'react-router-dom'
 import axios from 'axios'
 import Navbar from './navbar'
 import AuthState from './authState';
@@ -16,12 +15,6 @@ class Routes extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoggedIn: false,
-            user : {
-                balance:0,
-                id:0,
-                transactions:[],
-            },
             stocks:{},
             stockQuotes:{},
         }
@@ -29,6 +22,12 @@ class Routes extends Component {
         this.updateBalance = this.updateBalance.bind(this)
         this.stocksObject = this.stocksObject.bind(this)
         this.updatePrices = this.updatePrices.bind(this);
+    }
+    async componentDidMount() {
+        // Loads user's info
+        let data = axios.get('/api/user/transactions', () => {
+
+        })
     }
 
     

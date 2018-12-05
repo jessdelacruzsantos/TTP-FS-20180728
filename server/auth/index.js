@@ -8,8 +8,7 @@ router.post('/login', async (req,res,next) => {
         let user = await User.findOne({
             where: {
                 email:req.body.email
-            },
-            include: [{model:Transaction}]
+            }
         })
 
         if(user && user.correctPassword(req.body.password) ) {
@@ -36,12 +35,8 @@ router.post('/signup', async (req,res,next) => {
 
 router.get('/me', async (req,res,next) => {
     try{
-        let user = await User.findOne({ 
-            where:{id:req.user.id},
-            include: [{model:Transaction}]
-        })
+        let user = await User.findById(req.user.id)
         res.json(user)
-
     } catch(error) {
         console.log(error)
     }
