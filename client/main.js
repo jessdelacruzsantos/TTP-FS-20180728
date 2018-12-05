@@ -21,7 +21,6 @@ class App extends Component{
     async componentDidMount() {
         try{   
             let {data} = await axios.get('auth/me')
-            console.log(data)
             this.setState({
                 isLoading: false,
                 isLoggedIn: !!data.id, 

@@ -29,9 +29,11 @@ class PortfolioPage extends Component {
         let symbols = Object.keys(this.props.stocks)
         if(symbols.length){
             let {data} = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
-            this.setState({stockQuotes:data}, () => {
-                if(!this.state.hasLoaded) this.setState({hasLoaded:true})
+            this.setState({
+                stockQuotes:data,
             })
+        } else if (!this.state.hasLoaded){
+            this.setState({hasLoaded: true})
         }
     }
 
@@ -45,13 +47,14 @@ class PortfolioPage extends Component {
             }
             
         },0)
+        console.log(this.state.hasLoaded)
         return (
             <React.Fragment>
                 <div style={{display:'flex', marginTop:'10vh'}}>
                     <div style={{overflow:'hidden',height: '75vh', width:'40vw',marginLeft:'5vw',marginRight:'2.5vw'}}>
                     {
                         this.state.hasLoaded ? 
-                        <Portfolio stocks={this.props.stocks} stockQuotes={this.state.stockQuotes} totalValue={totalValue}/> 
+                        <Portfolio stocks={this.props.stocks} stockQuotes={this.state.stockQuotes} totalValue={Math.round(totalValue)}/> 
                         : <Loader height={'100vh'}/>
                     }
                     </div>

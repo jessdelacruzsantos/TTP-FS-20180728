@@ -23,12 +23,11 @@ const Portfolio= (props) => {
                         let {open, latestPrice} = 
                         props.stockQuotes[symbol] ? 
                         props.stockQuotes[symbol].quote : {open:0, latestPrice:0}
-
                         return (
                             <Table.Row key={symbol}>
                                 <Table.Cell>{symbol}</Table.Cell>
                                 <Table.Cell>{props.stocks[symbol]}</Table.Cell>
-                                <Table.Cell positive={latestPrice > open } negative={latestPrice < open }>{latestPrice * props.stocks[symbol]}</Table.Cell>
+                                <Table.Cell positive={latestPrice > open } negative={latestPrice < open }>{(latestPrice * props.stocks[symbol]).toFixed(2)}</Table.Cell>
                             </Table.Row>
                         )
                     })}

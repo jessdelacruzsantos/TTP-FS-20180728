@@ -29,11 +29,11 @@ class Routes extends Component {
         this.setState({
             transactions,
             stocks,
+            balance: data.balance
         })
     }
 
     stocksObject(transactions) {
-        console.log(transactions)
         let stocks = {}
 
         if(Array.isArray(transactions)) {
@@ -66,7 +66,8 @@ class Routes extends Component {
 
     
     render() {
-        if(this.props.isLoading) {
+        console.log(this.props)
+        if(this.props.isLoading && !this.props.isLoggedIn) {
             return <Loader height={'100vh'}/>
         } else {
             return (
