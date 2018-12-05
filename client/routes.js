@@ -26,32 +26,12 @@ class Routes extends Component {
             stockQuotes:{},
         }
 
-        this.logIn = this.logIn.bind(this)
-        this.logOut = this.logOut.bind(this)
-        this.signUp = this.signUp.bind(this)
         this.updateBalance = this.updateBalance.bind(this)
         this.stocksObject = this.stocksObject.bind(this)
         this.updatePrices = this.updatePrices.bind(this);
     }
 
-    async componentDidMount() {
-        try{   
-            let {data} = await axios.get('auth/me')
-            let stocks = this.stocksObject(data.transactions)
-            let symbols = Object.keys(stocks)
-            let quotes = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
-            this.setState({
-                isLoggedIn: !!data.id, 
-                user:data, 
-                stocks,
-                stockQuotes: quotes.data})
-            
-        }catch(error) {
-            console.log(error)
-        }
-        
-
-    }
+    
     async updatePrices() {
         let symbols = Object.keys(this.state.stocks)
 
@@ -97,49 +77,7 @@ class Routes extends Component {
         )
     }
 
-    async logIn(email, password) {
-        try {
-            let {data} =  await axios.post('/auth/login', {email,password})
-            let stocks = this.stocksObject(data.transactions)
-            let symbols = Object.keys(stocks)
-            let quotes = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
-            this.setState({
-                isLoggedIn:!!data.id, 
-                user:data, stocks,
-                stockQuotes: quotes.data})
-        } catch(error) {
-            console.log(error)
-        }
-    }
-
-    async signUp(email, password) {
-        try {
-            let {data} =  await axios.post('/auth/signup', {email,password})
-            this.setState({
-                isLoggedIn:!!data.id, 
-                user: {...data, transactions: []},
-            })
-        }catch(erro) {
-            console.log(error)
-        }
-    }
-
-    async logOut() {
-        await axios.post('/auth/logout')
-        this.setState({
-            isLoggedIn: false,
-            user : {
-                balance:0,
-                id:0,
-                transactions:[],
-            },
-            stocks:{},
-            stockQuotes:{},
-        })
-        this.props.history.push('/')
-
-    }
-
+    
     render() {
         return (<Switch>
             {this.state.isLoggedIn && (
