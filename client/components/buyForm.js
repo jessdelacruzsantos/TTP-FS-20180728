@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import axios from 'axios'
-import { Button, Form, Statistic}from 'semantic-ui-react'
+import { Button, Form, Statistic, Message}from 'semantic-ui-react'
 
 class BuyForm extends Component{
     constructor(props) {
@@ -48,6 +47,12 @@ class BuyForm extends Component{
                 <Form.Field>
                     <input placeholder='Whole Number of Shares' name='quantity' value={this.state.quantity} onChange={this.handleChange}/>
                 </Form.Field>
+                {
+                    !this.props.validInput && 
+                    (<Message negative>
+                        <Message.Header>Your Input is invalid</Message.Header>
+                    </Message>)
+                }
                 <Button type='submit'>Buy</Button>
                 </Form>
             </React.Fragment>

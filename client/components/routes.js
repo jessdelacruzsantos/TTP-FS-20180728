@@ -13,7 +13,8 @@ class Routes extends Component {
             stocks:{},
             transactions: [],
             balance:0,
-            hasLoaded:false
+            hasLoaded:false,
+            validInput:true
         }
 
         this.makeTransaction = this.makeTransaction.bind(this)
@@ -52,18 +53,23 @@ class Routes extends Component {
     }
 
     async makeTransaction(ticker,quantity){
-        let prevStocks = this.state.stocks
-        let prevTrans = this.state.transactions
-        let {data} = await axios.post(`/api/user/transactions`, {ticker,quantity})
-        let {balance, transaction} = data
-        let newQuantity = (prevStocks[transaction.ticker] || 0) + transaction.quantity
-
-        this.setState({
-            balance,
-            transactions:[...prevTrans,transaction],
-            stocks:{...prevStocks, [transaction.ticker]:newQuantity}
-
-        })
+        try{
+            let prevStocks = this.state.stocks
+            let prevTrans = this.state.transactions
+            let {data} = await axios.post(`/api/user/transactions`, {ticker,quantity})
+            let {balance, transaction} = data
+            let newQuantity = (prevStocks[transaction.ticker] || 0) + transaction.quantity
+    
+            this.setState({
+                balance,
+                transactions:[...prevTrans,transaction],
+                stocks:{...prevStocks, [transaction.ticker]:newQuantity},
+                validInput: true
+            })
+        } catch(error) {
+            console.log(error, 'Something went wrong')
+            this.setState({validInput:false})
+        }   
     }
 
     
@@ -79,6 +85,7 @@ class Routes extends Component {
                             <Switch>
                                 <Route path={'/portfolio'} render={ (props) => (
                                     <PortfolioPage 
+                                        validInput={this.state.validInput}
                                         updatePrices={this.updatePrices} 
                                         stocks={this.state.stocks} 
                                         makeTransaction={this.makeTransaction}
