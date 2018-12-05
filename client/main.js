@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom'
-import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom'
+import {BrowserRouter,Switch, Route, Redirect, withRouter} from 'react-router-dom'
 import axios from 'axios'
 import Navbar from './navbar'
 import AuthState from './authState';
@@ -27,6 +27,7 @@ class App extends Component {
         }
 
         this.logIn = this.logIn.bind(this)
+        this.logOut = this.logOut.bind(this)
         this.signUp = this.signUp.bind(this)
         this.updateBalance = this.updateBalance.bind(this)
         this.stocksObject = this.stocksObject.bind(this)
@@ -40,7 +41,7 @@ class App extends Component {
             let symbols = Object.keys(stocks)
             let quotes = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
             this.setState({
-                isLoggedIn:true, 
+                isLoggedIn: !!data.id, 
                 user:data, 
                 stocks,
                 stockQuotes: quotes.data})
@@ -103,7 +104,7 @@ class App extends Component {
             let symbols = Object.keys(stocks)
             let quotes = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
             this.setState({
-                isLoggedIn:true, 
+                isLoggedIn:!!data.id, 
                 user:data, stocks,
                 stockQuotes: quotes.data})
         } catch(error) {
@@ -115,7 +116,7 @@ class App extends Component {
         try {
             let {data} =  await axios.post('/auth/signup', {email,password})
             this.setState({
-                isLoggedIn:true, 
+                isLoggedIn:!!data.id, 
                 user: {...data, transactions: []},
             })
         }catch(erro) {
@@ -123,11 +124,27 @@ class App extends Component {
         }
     }
 
+    async logOut() {
+        await axios.post('/auth/logout')
+        this.setState({
+            isLoggedIn: false,
+            user : {
+                balance:0,
+                id:0,
+                transactions:[],
+            },
+            stocks:{},
+            stockQuotes:{},
+        })
+        this.props.history.push('/')
+
+    }
+
     render() {
         return (<Switch>
             {this.state.isLoggedIn && (
                 <React.Fragment>
-                    <Navbar/>
+                    <Navbar logOut={this.logOut}/>
                     <Switch>
                         <Route path={'/portfolio'} render={ (props) => (<PortfolioPage updatePrices={this.updatePrices} stocks={this.state.stocks}user={this.state.user} stockQuotes={this.state.stockQuotes}updateBalance={this.updateBalance}{...props}/>)}/>
                         <Route path={'/transactions'} render={(props)=> <Transactions transactions={this.state.user.transactions} {...props}/>}/>
@@ -161,8 +178,10 @@ class App extends Component {
     }
 }
 
+const AppWithRouter= withRouter(App)
+
 ReactDOM.render(
     <BrowserRouter>
-        <App/>
+        <AppWithRouter/>
     </BrowserRouter>,
      document.getElementById('app'));

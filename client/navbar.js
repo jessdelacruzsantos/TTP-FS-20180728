@@ -6,7 +6,7 @@ import {
   Menu,
 } from 'semantic-ui-react'
 
-const Navbar = () => (
+const Navbar = (props) => (
   <div>
     <Menu fixed='top' >
       <Container style={{display:'flex', justifyContent:'space-between'}}>
@@ -19,7 +19,7 @@ const Navbar = () => (
               <Link to={'/transactions'}>Transactions</Link>
             </Dropdown.Item>
             <Dropdown.Divider/>
-            <Dropdown.Item>Log Out</Dropdown.Item>
+            <Dropdown.Item onClick={props.logOut}>Log Out</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </Container>
