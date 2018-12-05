@@ -54,7 +54,6 @@ class PortfolioPage extends Component {
                         <Portfolio stocks={this.props.stocks} stockQuotes={this.state.stockQuotes} totalValue={totalValue}/> 
                         : <Loader height={'100vh'}/>
                     }
-                        
                     </div>
                     <div style={{overflow:'hidden',height: '90vh', width:'40vw', marginLeft:'2.5vw', marginRight:'5vw'}}>
                         <BuyForm userId={this.props.user.id} makeTransaction={this.props.makeTransaction} balance={Math.round(this.props.user.balance) / 100.00}/>

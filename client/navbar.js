@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {
   Container,
   Dropdown,
@@ -16,8 +16,11 @@ const Navbar = (props) => (
         <Dropdown item simple text='Menu'>
           <Dropdown.Menu>
             <Dropdown.Item>
-              <Link to={'/transactions'}>Transactions</Link>
+              <NavLink style={{color:'black'}} activeStyle={{color:'#009c95'}} to={'/transactions'}>Transactions</NavLink>
             </Dropdown.Item>
+            <Dropdown.Item>
+            <NavLink style={{color:'black'}} activeStyle={{color:'#009c95'}} to={'/portfolio'}>Portfolio</NavLink>
+          </Dropdown.Item>
             <Dropdown.Divider/>
             <Dropdown.Item onClick={props.logOut}>Log Out</Dropdown.Item>
           </Dropdown.Menu>
