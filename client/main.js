@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter, withRouter} from 'react-router-dom'
-import {Routes} from './index'
+import {Routes} from './components'
 import axios from 'axios'
 
 
