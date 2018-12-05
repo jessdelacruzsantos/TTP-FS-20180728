@@ -3,7 +3,6 @@ import { Table, Statistic,Loader} from 'semantic-ui-react'
 
 const Portfolio= (props) => {
     let symbols = Object.keys(props.stocks)
-    console.log(props.stockQuotes)
     return  (
         <React.Fragment>
             <Statistic horizontal size='small'> 
@@ -28,7 +27,12 @@ const Portfolio= (props) => {
                             <Table.Row key={symbol}>
                                 <Table.Cell>{symbol}</Table.Cell>
                                 <Table.Cell>{props.stocks[symbol]}</Table.Cell>
-                                <Table.Cell positive={latestPrice > open } negative={latestPrice < open }>{latestPrice ? (latestPrice * props.stocks[symbol]).toFixed(2) : <Loader size='small' active inline />}</Table.Cell>
+                                <Table.Cell 
+                                    positive={latestPrice > open } 
+                                    negative={latestPrice < open }
+                                >
+                                    {latestPrice ? (latestPrice * props.stocks[symbol]).toFixed(2) : <Loader size='small' active inline />}
+                                </Table.Cell>
                             </Table.Row>
                         )
                     })}
