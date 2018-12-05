@@ -33,7 +33,7 @@ User.prototype.updateBalance = async function(cost){
     if(remaining >= 0) {
         return await this.update({balance: remaining})
     } else {
-        throw new Error()
+        throw new Error('Costs too much')
     }
 }
 

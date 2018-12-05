@@ -5,7 +5,7 @@ const Transactions = ({transactions}) => {
     return (
         <Table striped style={{marginTop:'10vh'}}>
             <Table.Header >
-                <Table.Row inverse>
+                <Table.Row>
                     <Table.HeaderCell>Type</Table.HeaderCell>
                     <Table.HeaderCell>Stock</Table.HeaderCell>
                     <Table.HeaderCell>Quantity</Table.HeaderCell>
