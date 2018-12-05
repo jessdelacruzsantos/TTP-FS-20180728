@@ -8,17 +8,23 @@ class PortfolioPage extends Component {
         super(props) 
         this.state={
             stockQuotes:{},
-            hasLoaded: false
         }
       this.updatePrices = this.updatePrices.bind(this)
     }
     
     componentDidMount() {
-        this.updatePrices()
-
-        this.getPrices = setInterval(()=> {
+        if(this.props.hasLoaded) {
             this.updatePrices()
-        }, 1000)
+            this.getPrices = setInterval(()=> {
+                this.updatePrices()
+            }, 1000)
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if( prevProps.hasLoaded !== this.props.hasLoaded ) {
+            this.updatePrices()
+        }
     }
 
     componentWillUnmount(){
@@ -41,25 +47,32 @@ class PortfolioPage extends Component {
   
         let totalValue = Object.keys(this.props.stocks).reduce((acc, stockSymbol) => {
             if(this.state.stockQuotes[stockSymbol]) {
-                return acc + (this.props.stocks[stockSymbol] * this.state.stockQuotes[stockSymbol].quote.latestPrice)
+                return acc + (this.props.stocks[stockSymbol] * this.state.stockQuotes[stockSymbol].quote.latestPrice * 100)
             } else {
                 return acc
             }
             
         },0)
-        console.log(this.state.hasLoaded)
         return (
             <React.Fragment>
                 <div style={{display:'flex', marginTop:'10vh'}}>
                     <div style={{overflow:'hidden',height: '75vh', width:'40vw',marginLeft:'5vw',marginRight:'2.5vw'}}>
                     {
-                        this.state.hasLoaded ? 
-                        <Portfolio stocks={this.props.stocks} stockQuotes={this.state.stockQuotes} totalValue={Math.round(totalValue)}/> 
-                        : <Loader height={'100vh'}/>
-                    }
+                        this.props.hasLoaded ? 
+                            <Portfolio 
+                                stocks={this.props.stocks} 
+                                stockQuotes={this.state.stockQuotes} 
+                                totalValue={Math.round(totalValue) / 100}
+                            /> 
+                            : <Loader height={'100vh'}/>
+                        }
                     </div>
                     <div style={{overflow:'hidden',height: '90vh', width:'40vw', marginLeft:'2.5vw', marginRight:'5vw'}}>
-                        <BuyForm userId={this.props.user.id} makeTransaction={this.props.makeTransaction} balance={Math.round(this.props.user.balance) / 100.00}/>
+                        <BuyForm 
+                            userId={this.props.user.id} 
+                            makeTransaction={this.props.makeTransaction} 
+                            balance={Math.round(this.props.balance) / 100.00}
+                        />
                     </div>
                 </div>
             </React.Fragment>

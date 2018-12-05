@@ -34,9 +34,14 @@ router.post('/signup', async (req,res,next) => {
 })
 
 router.get('/me', async (req,res,next) => {
+    
     try{
-        let user = await User.findById(req.user.id)
-        res.json(user)
+        if(req.user) {
+            let user = await User.findById(req.user.id)
+            res.json(user)
+        } else {
+            res.json({})
+        }
     } catch(error) {
         console.log(error)
     }

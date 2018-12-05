@@ -13,24 +13,26 @@ class Routes extends Component {
             stocks:{},
             transactions: [],
             balance:0,
+            hasLoaded:false
         }
 
         this.makeTransaction = this.makeTransaction.bind(this)
         this.stocksObject = this.stocksObject.bind(this)
     }
+    async componentDidUpdate(prevProps) {
+        if(prevProps.isLoggedIn !== this.props.isLoggedIn) {
+            // Loads data after user has signed in
+            let {data} = await axios.get('/api/user/transactions')
+            let transactions = Array.isArray(data) ? data : []
+            let stocks = this.stocksObject(data)
 
-    async componentDidMount() {
-        // Loads user's info
-        let {data} = await axios.get('/api/user/transactions')
-        let transactions = Array.isArray(data) ? data : []
- 
-        let stocks = this.stocksObject(data)
-
-        this.setState({
-            transactions,
-            stocks,
-            balance: data.balance
-        })
+            this.setState({
+                transactions,
+                stocks,
+                balance: this.props.user.balance,
+                hasLoaded: true
+            }) 
+        } 
     }
 
     stocksObject(transactions) {
@@ -54,7 +56,9 @@ class Routes extends Component {
         let prevTrans = this.state.transactions
         let {data} = await axios.post(`/api/user/transactions`, {ticker,quantity})
         let {balance, transaction} = data
-        let newQuantity = prevStocks[transaction.ticker] + transaction.quantity
+        let newQuantity = (prevStocks[transaction.ticker] || 0) + transaction.quantity
+        console.log(balance)
+        
 
         this.setState({
             balance,
@@ -66,8 +70,7 @@ class Routes extends Component {
 
     
     render() {
-        console.log(this.props)
-        if(this.props.isLoading && !this.props.isLoggedIn) {
+        if(this.props.isLoading) {
             return <Loader height={'100vh'}/>
         } else {
             return (
@@ -82,6 +85,8 @@ class Routes extends Component {
                                         stocks={this.state.stocks} 
                                         makeTransaction={this.makeTransaction}
                                         user={this.props.user}
+                                        balance={this.state.balance}
+                                        hasLoaded={this.state.hasLoaded}
                                         {...props}
                                     />)}
                                 />
