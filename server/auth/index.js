@@ -13,7 +13,7 @@ router.post('/login', async (req,res,next) => {
         })
 
         if(user && user.correctPassword(req.body.password) ) {
-            res.send(user)
+            req.login(user, err => (err ? next(err) : res.json(user)))
         } else {
             res.status(401).send('Wrong User Name or PassWord!')
         }
@@ -25,14 +25,27 @@ router.post('/login', async (req,res,next) => {
 
 router.post('/signup', async (req,res,next) => {
     try {
-        let newUser = await User.create(req.body)
-
-        res.status(200).json(newUser)
+        let user = await User.create(req.body)
+        req.login(user, err => (err ? next(err) : res.json(user)))
 
     } catch (error) {
         res.status(500).send({message:'Something went wrong', error})
 
     }
+})
+
+router.get('/me', async (req,res,next) => {
+    try{
+        let user = await User.findOne({ 
+            where:{id:req.user.id},
+            include: [{model:Transaction}]
+        })
+        res.json(user)
+
+    } catch(error) {
+        console.log(error)
+    }
+
 })
 
 

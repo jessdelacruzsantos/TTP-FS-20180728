@@ -18,7 +18,6 @@ class BuyForm extends Component{
         event.preventDefault()
         try{
             let {ticker,quantity} = this.state
-            console.log({ticker,quantity})
             let {data} = await axios.post(`/api/user/${this.props.userId}/purchase`, {ticker,quantity})
             this.props.updateBalance(data)
             this.setState({

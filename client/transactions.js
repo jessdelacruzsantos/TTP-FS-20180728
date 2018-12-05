@@ -20,7 +20,6 @@ const Transactions = ({transactions}) => {
     )
 }
 function createRows(transaction) {
-    console.log(transaction)
     return (
         <Table.Row key={transaction.id}>
             <Table.Cell>{transaction.type}</Table.Cell>

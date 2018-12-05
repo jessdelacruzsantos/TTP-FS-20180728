@@ -32,6 +32,25 @@ class App extends Component {
         this.stocksObject = this.stocksObject.bind(this)
         this.updatePrices = this.updatePrices.bind(this);
     }
+
+    async componentDidMount() {
+        try{   
+            let {data} = await axios.get('auth/me')
+            let stocks = this.stocksObject(data.transactions)
+            let symbols = Object.keys(stocks)
+            let quotes = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
+            this.setState({
+                isLoggedIn:true, 
+                user:data, 
+                stocks,
+                stockQuotes: quotes.data})
+            
+        }catch(error) {
+            console.log(error)
+        }
+        
+
+    }
     async updatePrices() {
         let symbols = Object.keys(this.state.stocks)
 
@@ -105,7 +124,6 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.state.user.transactions)
         return (<Switch>
             {this.state.isLoggedIn && (
                 <React.Fragment>
