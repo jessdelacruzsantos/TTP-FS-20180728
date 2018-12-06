@@ -58,7 +58,7 @@ const createApp = () => {
 
 
 const start = async () => {
-  const PORT = 8080;
+  const PORT = process.env.PORT || 3000;
   await sessionStore.sync()
   await db.sync();
   await createApp()
