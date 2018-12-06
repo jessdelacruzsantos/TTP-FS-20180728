@@ -39,6 +39,7 @@ class PortfolioPage extends Component {
     }
 
     async updatePrices() {
+        /// Gets latest prices from iextrading in Bulk
         let symbols = Object.keys(this.props.stocks)
         if(symbols.length){
             let {data} = await axios.get(`https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbols}&types=quote&filter=open,latestPrice`)
@@ -49,7 +50,6 @@ class PortfolioPage extends Component {
             this.setState({hasLoaded: true})
         }
     }
-
     render() {
   
         let totalValue = Object.keys(this.props.stocks).reduce((acc, stockSymbol) => {
