@@ -13,9 +13,10 @@ RUN npm install
 
 # Make port 80 available to the world outside this container
 EXPOSE 3000
+EXPOSE 5432
 
 # Define environment variable
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["npm", "run", "start"]
+CMD ["npm","run", "start"]
