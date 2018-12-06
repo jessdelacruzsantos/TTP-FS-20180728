@@ -9,7 +9,7 @@
     ]
   },
   "scripts": {
-    "start": "nodemon ./server/app.js",
+    "start": "node ./server/app.js",
     "production":"node ./server/app.js",
     "build": "webpack -w",
     "start:dev": "npm run build & npm start"
